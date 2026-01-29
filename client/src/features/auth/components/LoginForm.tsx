@@ -3,6 +3,7 @@ import type { FormEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { loginUser } from '../slice/auth.slice';
+import GoogleLoginButton from './GoogleLoginButton';
 import './AuthForms.css';
 
 const LoginForm = () => {
@@ -79,6 +80,14 @@ const LoginForm = () => {
             )}
           </button>
         </form>
+
+        <div className="auth-divider">
+          <span className="divider-line"></span>
+          <span className="divider-text">or</span>
+          <span className="divider-line"></span>
+        </div>
+
+        <GoogleLoginButton />
 
         <div className="auth-footer">
           <p>Don't have an account? <Link to="/register" className="auth-link">Create one</Link></p>
