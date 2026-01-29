@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
+import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { registerUser } from '../slice/auth.slice';
 import './AuthForms.css';
@@ -117,7 +118,7 @@ const RegisterForm = () => {
         </form>
 
         <div className="auth-footer">
-          <p>Already have an account? <a href="/login" className="auth-link">Sign in</a></p>
+          <p>Already have an account? <Link to="/login" className="auth-link">Sign in</Link></p>
         </div>
       </div>
     </div>

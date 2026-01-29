@@ -17,7 +17,7 @@ const RegisterPage = () => {
   }, [isRegistered, navigate, dispatch]);
 
   return (
-    <div>
+    <div className="page-transition-wrapper">
       <RegisterForm />
     </div>
   );

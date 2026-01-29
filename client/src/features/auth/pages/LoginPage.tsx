@@ -1,8 +1,9 @@
+import LoginForm from '../components/LoginForm';
+
 const LoginPage = () => {
   return (
-    <div>
-      <h1>Login</h1>
-      <p>Login page works</p>
+    <div className="page-transition-wrapper">
+      <LoginForm />
     </div>
   );
 };
