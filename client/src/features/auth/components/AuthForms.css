@@ -346,11 +346,97 @@ body {
   to { transform: rotate(360deg); }
 }
 
+/* Divider */
+.auth-divider {
+  margin: 2rem 0 1.5rem 0;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  animation: fadeIn 0.8s ease-out 0.65s backwards;
+}
+
+.divider-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(255, 255, 255, 0.2) 50%, 
+    transparent 100%
+  );
+}
+
+.divider-text {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Google Button */
+.google-button {
+  width: 100%;
+  padding: 1rem 1.5rem;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  color: #1f1f1f;
+  font-family: 'Manrope', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  animation: fadeInUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.7s backwards;
+}
+
+.google-button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 1) 0%, 
+    rgba(245, 245, 245, 1) 100%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.google-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.google-button:hover::before {
+  opacity: 1;
+}
+
+.google-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.google-button > * {
+  position: relative;
+  z-index: 1;
+}
+
+.google-icon {
+  flex-shrink: 0;
+}
+
 /* Footer */
 .auth-footer {
   margin-top: 2rem;
   text-align: center;
-  animation: fadeIn 0.8s ease-out 0.7s backwards;
+  animation: fadeIn 0.8s ease-out 0.75s backwards;
 }
 
 .auth-footer p {
@@ -446,5 +532,10 @@ body {
   .auth-button {
     padding: 1rem 1.5rem;
     font-size: 0.9375rem;
+  }
+
+  .google-button {
+    padding: 0.875rem 1.25rem;
+    font-size: 0.9rem;
   }
 }
