@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { register, login } from '../api/auth.api';
+import { register, login, logout } from '../api/auth.api';
 import type { RegisterRequest, LoginRequest } from '../types';
 
 interface AuthState {
@@ -7,6 +7,7 @@ interface AuthState {
   error: string | null;
   isRegistered: boolean;
   token: string | null;
+  isAuthenticated: boolean;
 }
 
 const initialState: AuthState = {
@@ -14,9 +15,9 @@ const initialState: AuthState = {
   error: null,
   isRegistered: false,
   token: localStorage.getItem('token'),
+  isAuthenticated: !!localStorage.getItem('token'),
 };
 
-// async thunk для реєстрації
 export const registerUser = createAsyncThunk(
   'auth/register',
   async (data: RegisterRequest, { rejectWithValue }) => {
@@ -43,23 +44,39 @@ export const loginUser = createAsyncThunk(
   }
 );
 
+export const logoutUserAsync = createAsyncThunk(
+  'auth/logout',
+  async (_, { getState, rejectWithValue }) => {
+    try {
+      const state = getState() as { auth: AuthState };
+      const token = state.auth.token;
+
+      if (token) {
+        await logout(token);
+      }
+    } catch {
+      return rejectWithValue('Logout failed');
+    }
+  }
+);
+
 const authSlice = createSlice({
   name: 'auth',
   initialState,
-reducers: {
-  resetAuthState(state) {
-    state.loading = false;
-    state.error = null;
-    state.isRegistered = false;
+  reducers: {
+    resetAuthState(state) {
+      state.loading = false;
+      state.error = null;
+      state.isRegistered = false;
+    },
+    setToken(state, action) {
+      state.token = action.payload;
+      state.isAuthenticated = true;
+      localStorage.setItem('token', action.payload);
+    },
   },
-  setToken(state, action) {
-    state.token = action.payload;
-    localStorage.setItem('token', action.payload);
-  },
-},
   extraReducers: (builder) => {
     builder
-      // REGISTER
       .addCase(registerUser.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -72,8 +89,6 @@ reducers: {
         state.loading = false;
         state.error = action.payload as string;
       })
-
-      // LOGIN
       .addCase(loginUser.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -81,11 +96,17 @@ reducers: {
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loading = false;
         state.token = action.payload.token;
+        state.isAuthenticated = true;
         localStorage.setItem('token', action.payload.token);
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
+      })
+      .addCase(logoutUserAsync.fulfilled, (state) => {
+        state.token = null;
+        state.isAuthenticated = false;
+        localStorage.removeItem('token');
       });
   },
 });

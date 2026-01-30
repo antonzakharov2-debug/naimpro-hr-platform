@@ -1,21 +1,27 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 
-import RegisterPage from './features/auth/pages/RegisterPage';
-import LoginPage from './features/auth/pages/LoginPage';
-import OAuthSuccessPage from './features/auth/pages/OAuthSuccessPage';
+import LoginForm from './features/auth/components/LoginForm';
+import RegisterForm from './features/auth/components/RegisterForm';
+import DashboardPage from './features/dashboard/pages/DashboardPage';
+import OAuthSuccessPage from '../src/features/auth/pages/OAuthSuccessPage';
+import ProtectedRoute from './app/routes/ProtectedRoute';
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Navigate to="/register" />} />
+    <Routes>
+      <Route path="/login" element={<LoginForm />} />
+      <Route path="/register" element={<RegisterForm />} />
+      <Route path="/oauth-success" element={<OAuthSuccessPage />} />
 
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/oauth-success" element={<OAuthSuccessPage />} />
-        {/* <Route path="/dashboard" element={<div>Dashboard</div>} /> */}
-      </Routes>
-    </BrowserRouter>
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute>
+            <DashboardPage />
+          </ProtectedRoute>
+        }
+      />
+    </Routes>
   );
 }
 

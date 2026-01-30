@@ -1,12 +1,14 @@
 const express = require('express');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
-const { register,login } = require('../controllers/auth.controller');
+const { register,login,logout } = require('../controllers/auth.controller');
+const authenticate = require('../middlewares/auth.middleware');
 
 const router = express.Router();
 
 router.post('/register', register);
 router.post('/login', login);
+router.post('/logout', authenticate, logout);
 
 // старт Google OAuth
 router.get(

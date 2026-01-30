@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user.model');
+const TokenBlacklist = require('../models/tokenBlacklist.model');
 
 const registerUser = async (email, password) => {
   const existingUser = await User.findOne({ email });
@@ -47,8 +48,21 @@ const loginUser = async (email, password) => {
 
   return token;
 };
+const logoutUser = async (token) => {
+  const decoded = jwt.decode(token);
+
+  if (!decoded || !decoded.exp) {
+    throw new Error('Invalid token');
+  }
+
+  await TokenBlacklist.create({
+    token,
+    expiresAt: new Date(decoded.exp * 1000),
+  });
+};
 
 module.exports = {
   registerUser,
   loginUser,
+  logoutUser,
 };

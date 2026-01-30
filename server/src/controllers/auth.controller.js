@@ -1,4 +1,5 @@
 const { registerUser,loginUser } = require('../services/auth.service');
+const { logoutUser } = require('../services/auth.service');
 
 const register = async (req, res) => {
   try {
@@ -53,7 +54,19 @@ const login = async (req, res) => {
     });
   }
 };
+const logout = async (req, res) => {
+  try {
+    const token = req.token;
+
+    await logoutUser(token);
+
+    res.status(200).json({ message: 'Logged out successfully' });
+  } catch (err) {
+    res.status(500).json({ message: 'Logout failed' });
+  }
+};
 module.exports = {
   register,
   login,
+  logout,
 };
