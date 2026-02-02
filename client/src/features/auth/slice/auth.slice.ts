@@ -44,18 +44,19 @@ export const loginUser = createAsyncThunk(
   }
 );
 
+// 🔥 logout — best effort
 export const logoutUserAsync = createAsyncThunk(
   'auth/logout',
-  async (_, { getState, rejectWithValue }) => {
-    try {
-      const state = getState() as { auth: AuthState };
-      const token = state.auth.token;
+  async (_, { getState }) => {
+    const state = getState() as { auth: AuthState };
+    const token = state.auth.token;
 
-      if (token) {
+    if (token) {
+      try {
         await logout(token);
+      } catch {
+        // ❗ ІГНОРУЄМО ПОМИЛКУ — це ок
       }
-    } catch {
-      return rejectWithValue('Logout failed');
     }
   }
 );
@@ -77,6 +78,7 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      // REGISTER
       .addCase(registerUser.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -89,6 +91,8 @@ const authSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
+
+      // LOGIN
       .addCase(loginUser.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -103,9 +107,13 @@ const authSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
+
+      // 🔥 LOGOUT — ЗАВЖДИ
       .addCase(logoutUserAsync.fulfilled, (state) => {
         state.token = null;
         state.isAuthenticated = false;
+        state.loading = false;
+        state.error = null;
         localStorage.removeItem('token');
       });
   },

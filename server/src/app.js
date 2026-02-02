@@ -3,6 +3,7 @@ const cors = require('cors');
 
 const authRoutes = require('./routes/auth.routes');
 const passport = require('./config/passport');
+const vacanciesRoutes = require('./routes/vacancies.routes');
 
 const app = express();
 app.use(passport.initialize());
@@ -15,5 +16,6 @@ app.get('/health', (req, res) => {
 });
 
 app.use('/api/auth', authRoutes);
+app.use('/api/vacancies', vacanciesRoutes);
 
 module.exports = app;

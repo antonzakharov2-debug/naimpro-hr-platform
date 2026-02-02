@@ -1,29 +1,35 @@
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../../app/hooks';
 import { logoutUserAsync } from '../../auth/slice/auth.slice';
-import './DashboardPage.css';
+import { DashboardHeader, DashboardContent } from '../components';
+import '../components/Dashboard.css';
 
 const DashboardPage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const handleLogout = async () => {
-    await dispatch(logoutUserAsync());
+const handleLogout = async () => {
+  try {
+    await dispatch(logoutUserAsync()).unwrap();
+  } catch (e) {
+    // backend міг впасти — це ОК
+    console.warn('Logout API failed, clearing client state');
+  } finally {
     navigate('/login', { replace: true });
-  };
+  }
+};
 
   return (
-    <div className="dashboard-container">
-      <header className="dashboard-header">
-        <h1 className="dashboard-title">Dashboard</h1>
-        <button className="logout-button" onClick={handleLogout}>
-          Logout
-        </button>
-      </header>
-
-      <main className="dashboard-main">
-        <p>Welcome</p>
-      </main>
+    <div className="dashboard-page">
+      <div className="dashboard-background">
+        <div className="gradient-orb orb-1"></div>
+        <div className="gradient-orb orb-2"></div>
+        <div className="gradient-orb orb-3"></div>
+      </div>
+      <div className="dashboard-container">
+        <DashboardHeader onLogout={handleLogout} />
+        <DashboardContent />
+      </div>
     </div>
   );
 };

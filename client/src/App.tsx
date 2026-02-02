@@ -5,7 +5,9 @@ import RegisterForm from './features/auth/components/RegisterForm';
 import DashboardPage from './features/dashboard/pages/DashboardPage';
 import OAuthSuccessPage from '../src/features/auth/pages/OAuthSuccessPage';
 import ProtectedRoute from './app/routes/ProtectedRoute';
-
+import CreateVacancyPage from './features/vacancies/pages/CreateVacancyPage';
+import VacanciesListPage from './features/vacancies/pages/VacanciesListPage';
+import EditVacancyPage from './features/vacancies/pages/EditVacancyPage';
 function App() {
   return (
     <Routes>
@@ -21,6 +23,32 @@ function App() {
           </ProtectedRoute>
         }
       />
+      <Route
+        path="/vacancies/create"
+        element={
+          <ProtectedRoute>
+            <CreateVacancyPage />
+          </ProtectedRoute>
+         }
+      />
+      <Route
+  path="/vacancies"
+  element={
+    <ProtectedRoute>
+      <VacanciesListPage />
+    </ProtectedRoute>
+  }
+/>
+<Route
+  path="/vacancies/:vacancyId/edit"
+  element={
+    <ProtectedRoute>
+      <EditVacancyPage />
+    </ProtectedRoute>
+  }
+/>
+
+
     </Routes>
   );
 }
