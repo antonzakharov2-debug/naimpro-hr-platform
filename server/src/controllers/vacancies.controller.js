@@ -38,17 +38,15 @@ const createVacancy = async (req, res) => {
 const getVacancies = async (req, res) => {
   try {
     const vacancies = await Vacancy.find()
-      .sort({ createdAt: -1 })
-      .populate('createdBy', 'email role');
+      .populate('createdBy', 'email role')
+      .sort({ createdAt: -1 });
 
-    return res.status(200).json(vacancies);
+    res.status(200).json(vacancies);
   } catch (error) {
-    console.error('Get vacancies error:', error);
-    return res.status(500).json({
-      message: 'Failed to fetch vacancies',
-    });
+    res.status(500).json({ message: 'Failed to load vacancies' });
   }
 };
+
 const updateVacancy = async (req, res) => {
   try {
     const { id } = req.params;
@@ -91,22 +89,19 @@ const updateVacancy = async (req, res) => {
 };
 const getVacancyById = async (req, res) => {
   try {
-    const { id } = req.params;
-
-    const vacancy = await Vacancy.findById(id);
+    const vacancy = await Vacancy.findById(req.params.id)
+      .populate('createdBy', 'email role');
 
     if (!vacancy) {
       return res.status(404).json({ message: 'Vacancy not found' });
     }
 
-    return res.status(200).json(vacancy);
+    res.status(200).json(vacancy);
   } catch (error) {
-    console.error('Get vacancy by id error:', error);
-    return res.status(500).json({
-      message: 'Failed to load vacancy',
-    });
+    res.status(500).json({ message: 'Failed to load vacancy' });
   }
 };
+
 const hideVacancy = async (req, res) => {
   try {
     const { id } = req.params;
