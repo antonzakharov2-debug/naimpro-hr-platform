@@ -7,6 +7,16 @@
     <title>client</title>
   </head>
   <body>
+    <script>
+  (function () {
+    const redirect = sessionStorage.getItem("redirect");
+    if (redirect) {
+      sessionStorage.removeItem("redirect");
+      history.replaceState(null, "", redirect);
+    }
+  })();
+</script>
+
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
