@@ -9,6 +9,16 @@
     <link rel="stylesheet" crossorigin href="/naimpro-hr-platform/assets/index-DLWDXXie.css">
   </head>
   <body>
+    <script>
+  (function () {
+    const redirect = sessionStorage.getItem("redirect");
+    if (redirect) {
+      sessionStorage.removeItem("redirect");
+      history.replaceState(null, "", redirect);
+    }
+  })();
+</script>
+
     <div id="root"></div>
   </body>
 </html>

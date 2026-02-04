@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Redirecting...</title>
+    <script>
+      // GitHub Pages SPA redirect
+      const repo = "/naimpro-hr-platform";
+      const path = location.pathname.replace(repo, "");
+      sessionStorage.setItem("redirect", path);
+      location.replace(repo + "/");
+    </script>
+  </head>
+  <body></body>
+</html>
