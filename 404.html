@@ -4,9 +4,11 @@
     <meta charset="utf-8" />
     <title>Redirecting...</title>
     <script>
-      // GitHub Pages SPA redirect
       const repo = "/naimpro-hr-platform";
-      const path = location.pathname.replace(repo, "");
+      const path = location.pathname.startsWith(repo)
+        ? location.pathname.slice(repo.length)
+        : location.pathname;
+
       sessionStorage.setItem("redirect", path);
       location.replace(repo + "/");
     </script>
